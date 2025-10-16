@@ -6,7 +6,6 @@ import openfl.text.TextFormat;
 import openfl.system.System;
 import openfl.display.Sprite;
 import openfl.display.Shape;
-import StringTools;
 
 /**
     The FPS class provides an easy-to-use monitor to display
@@ -59,10 +58,11 @@ class FPSCounter extends Sprite
     {
         var totalMemoryMB = Math.round(System.totalMemory / (1024 * 1024));
         var usedMemoryMB = Math.round(memoryMegas);
+        var ramGB:Float = Math.round((totalMemoryMB / 1024.0) * 10) / 10; // 1 decimal
 
         textField.text = "FPS " + currentFPS
                        + "\nMemory: " + usedMemoryMB + "mb (" + totalMemoryMB + "mb)"
-                       + "\nRam: " + StringTools.format("{0,0.1}", totalMemoryMB / 1024.0) + "GB"
+                       + "\nRam: " + ramGB + "GB"
                        + "\nPsych Engine 1.0.4";
 
         updateBackground();
