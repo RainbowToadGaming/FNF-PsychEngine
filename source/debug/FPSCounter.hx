@@ -6,6 +6,7 @@ import openfl.text.TextFormat;
 import openfl.system.System;
 import openfl.display.Sprite;
 import openfl.display.Shape;
+import StringTools;
 
 /**
     The FPS class provides an easy-to-use monitor to display
@@ -32,9 +33,6 @@ class FPSCounter extends Sprite
 
         // Background
         background = new Shape();
-        background.graphics.beginFill(0x000000, 0.5); // black with 50% transparency
-        background.graphics.drawRect(0, 0, 150, 60); // temporary size
-        background.graphics.endFill();
         addChild(background);
 
         // Text field
@@ -52,7 +50,7 @@ class FPSCounter extends Sprite
     private function updateBackground():Void
     {
         background.graphics.clear();
-        background.graphics.beginFill(0x000000, 0.5);
+        background.graphics.beginFill(0x000000, 0.5); // semi-transparent black
         background.graphics.drawRect(0, 0, textField.width + 10, textField.height + 6);
         background.graphics.endFill();
     }
@@ -62,9 +60,9 @@ class FPSCounter extends Sprite
         var totalMemoryMB = Math.round(System.totalMemory / (1024 * 1024));
         var usedMemoryMB = Math.round(memoryMegas);
 
-        textField.text = "FPS ${currentFPS}"
-                       + "\nMemory: ${usedMemoryMB}mb (${totalMemoryMB}mb)"
-                       + "\nRam: " + ((totalMemoryMB / 1024.0).toFixed(1)) + "GB"
+        textField.text = "FPS " + currentFPS
+                       + "\nMemory: " + usedMemoryMB + "mb (" + totalMemoryMB + "mb)"
+                       + "\nRam: " + StringTools.format("{0,0.1}", totalMemoryMB / 1024.0) + "GB"
                        + "\nPsych Engine 1.0.4";
 
         updateBackground();
