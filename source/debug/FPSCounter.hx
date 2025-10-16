@@ -56,9 +56,17 @@ class FPSCounter extends Sprite
 
     private function updateText():Void
     {
+        // Convert bytes -> MB
+        var usedMemoryMB = Math.round(memoryMegas / (1024 * 1024));
+        if (usedMemoryMB < 0) usedMemoryMB = 0;
+        if (usedMemoryMB > 999) usedMemoryMB = 999; // clamp to 3 digits
+
         var totalMemoryMB = Math.round(System.totalMemory / (1024 * 1024));
-        var usedMemoryMB = Math.round(memoryMegas);
-        var ramGB:Float = Math.round((totalMemoryMB / 1024.0) * 10) / 10; // 1 decimal
+        if (totalMemoryMB < 0) totalMemoryMB = 0;
+        if (totalMemoryMB > 999) totalMemoryMB = 999;
+
+        // Approximate RAM in GB (process memory, not real system RAM)
+        var ramGB:Float = Math.round((totalMemoryMB / 1024.0) * 10) / 10;
 
         textField.text = "FPS " + currentFPS
                        + "\nMemory: " + usedMemoryMB + "mb (" + totalMemoryMB + "mb)"
