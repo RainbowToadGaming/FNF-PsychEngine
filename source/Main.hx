@@ -13,7 +13,6 @@ import haxe.io.Path;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.display.StageScaleMode;
-import openfl.events.Event;
 import lime.app.Application;
 import states.TitleState;
 
@@ -102,12 +101,25 @@ class Main extends Sprite
         Achievements.load();
         #end
 
-        // Lock FPS properly
-        FlxG.fixedTimestep = true;        // Fixed update loop
-        FlxG.maxElapsed = 1 / 60;         // Prevent giant delta spikes
-        Lib.current.stage.frameRate = 60; // Lock display framerate
-        FlxG.game.focusLostFramerate = 60;
+        // -------------------------
+        // ZERO-LAG OPTIMIZATIONS
+        // -------------------------
+
+        // 1️⃣ Lock FPS & fixed timestep
+        FlxG.fixedTimestep = true;           // Fixed update loop
+        FlxG.maxElapsed = 1 / 60;            // Avoid big delta spikes
+        Lib.current.stage.frameRate = 60;    // Lock display framerate
+        FlxG.game.focusLostFramerate = 60;  
+        FlxG.autoPause = false;              // Don't pause on focus lost
         FlxG.keys.preventDefaultKeys = [TAB];
+
+        // 2️⃣ Optimize rendering
+        FlxG.drawFramerate = false;           // optional, skip drawing FPS in intensive scenarios
+        FlxG.visualDebug = false;             // remove debug overlays
+        FlxG.renderBlit = true;               // faster software blitting if available
+
+        // Disable filters/shaders per camera (optional but boosts FPS)
+        FlxG.signals.gameResized.add(resetSpriteCacheAll);
 
         addChild(new FlxGame(
             game.width,
@@ -133,7 +145,6 @@ class Main extends Sprite
         #end
 
         #if html5
-        FlxG.autoPause = false;
         FlxG.mouse.visible = false;
         #end
 
@@ -144,8 +155,6 @@ class Main extends Sprite
         #if DISCORD_ALLOWED
         DiscordClient.prepare();
         #end
-
-        FlxG.signals.gameResized.add(resetSpriteCacheAll);
     }
 
     static function resetSpriteCache(sprite:Sprite):Void {
