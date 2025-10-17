@@ -160,7 +160,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		8,
 		12,
 		16,
-		24
+		24,
+		32,
+		48,
+		64,
+		96,
+		192
 	];
 	var curZoom:Float = 1;
 
