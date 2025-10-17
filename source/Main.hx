@@ -105,7 +105,6 @@ class Main extends Sprite
         // ZERO-LAG OPTIMIZATIONS
         // -------------------------
 
-        // 1️⃣ Lock FPS & fixed timestep
         FlxG.fixedTimestep = true;           // Fixed update loop
         FlxG.maxElapsed = 1 / 60;            // Avoid big delta spikes
         Lib.current.stage.frameRate = 60;    // Lock display framerate
@@ -113,10 +112,7 @@ class Main extends Sprite
         FlxG.autoPause = false;              // Don't pause on focus lost
         FlxG.keys.preventDefaultKeys = [TAB];
 
-        // 2️⃣ Optimize rendering
-        FlxG.drawFramerate = false;           // optional, skip drawing FPS in intensive scenarios
-        FlxG.visualDebug = false;             // remove debug overlays
-        FlxG.renderBlit = true;               // faster software blitting if available
+        FlxG.drawFramerate = 0; // skip FPS display in intensive scenarios
 
         // Disable filters/shaders per camera (optional but boosts FPS)
         FlxG.signals.gameResized.add(resetSpriteCacheAll);
